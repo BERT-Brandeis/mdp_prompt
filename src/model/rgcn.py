@@ -1,6 +1,6 @@
 import torch
 from torch import nn
-import torch.nn.functional as F
+import torch.nn.functional as LOG_F
 
 
 class RGCN_Layer(nn.Module):
@@ -75,7 +75,7 @@ class RGCN_Layer(nn.Module):
                 gAxW = torch.stack(gAxW)
                 gAxWs.append(gAxW)
             gAxWs = torch.stack(gAxWs, dim=1)
-            gAxWs = F.relu((torch.sum(gAxWs, 1) + self.W_0[l](gcn_inputs)) / denomss)  # self loop
+            gAxWs = LOG_F.relu((torch.sum(gAxWs, 1) + self.W_0[l](gcn_inputs)) / denomss)  # self loop
             gcn_inputs = self.gcn_drop(gAxWs) if l < self.layers - 1 else gAxWs
 
         return gcn_inputs, maskss

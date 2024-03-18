@@ -97,7 +97,7 @@ def main(args):
         assert not args.pretraining
     if args.pretraining:
         assert not args.mix_data
-        
+
     if args.mix_data or args.pretraining:
         assert args.train_file_pretrain is not None
         tr_pretrain_examples, tr_pretrain_lm_inputs, tr_pretrain_gcn_inputs = read_data(
@@ -381,7 +381,7 @@ if __name__ == "__main__":
                         choices=['modal', 'temporal_event', 'temporal_time', 'temporal_tdt'], required=True)
     parser.add_argument("--language", default=None, type=str, choices=['chn', 'eng'], required=True)
 
-    parser.add_argument("--max_seq_length", default=512, type=int)
+    parser.add_argument("--max_seq_length", default=384, type=int)
     parser.add_argument("--encoding_method", default="overlap", type=str, choices=["no_overlap", "overlap"])
 
     parser.add_argument("--classifier", default=None, type=str,
@@ -403,7 +403,7 @@ if __name__ == "__main__":
     parser.add_argument("--outmodel_name", default=None, type=str)
 
     parser.add_argument("--distributed_training", action='store_true')
-    parser.add_argument("--num_train_epochs", default=1.0, type=float,
+    parser.add_argument("--num_train_epochs", default=30., type=float,
                         help="Total number of training epochs to perform.")
     parser.add_argument("--pretrain_epochs", default=0., type=float,
                         help="Total number of pretraining epochs to perform.")

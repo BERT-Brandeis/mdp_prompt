@@ -1,8 +1,9 @@
+import numpy as np
 import torch
 from torch.nn import CrossEntropyLoss
 import torch.nn as nn
 from torch.nn.utils.rnn import pad_sequence
-import torch.nn.functional as F
+import torch.nn.functional as LOG_F
 from torch.nn import MultiheadAttention
 
 from data.data_structures_modal import *
@@ -381,7 +382,7 @@ class ModalDependencyGraphParser(nn.Module):
         if self.has_sent_vec:
             assert child_sent_vec.shape == child_vecs.shape
             assert parent_sent_vecs.shape == parent_vecs.shape
-            
+
             child_vecs = torch.cat([child_vecs, child_sent_vec], dim=-1)
             child_vecs = self.child_sent_mlp(child_vecs)
             parent_vecs = torch.cat([parent_vecs, parent_sent_vecs], dim=-1)
@@ -413,7 +414,8 @@ class ModalDependencyGraphParser(nn.Module):
                 return child_parent_scores.detach().cpu()  # num_child * 80 (16*5)
         else:
             # gold_rel: torch.Size([20, 80])
-            gold_rel = torch.tensor(gold_one_hot).view(num_child, -1)
+            # gold_rel = torch.tensor(gold_one_hot).view(num_child, -1)
+            gold_rel = torch.tensor(np.array(gold_one_hot)).view(num_child, -1)
             # num_child: torch.Size([20])
             _, gold_rel = gold_rel.max(dim=1)
             gold_rel = gold_rel.to(device)

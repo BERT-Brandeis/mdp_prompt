@@ -7,7 +7,8 @@ from data.data_structures_modal import *
 from data.data_preparation_modal import make_training_data, make_test_data, make_test_data_from_doc_lst
 from data.data_preparation_modal import eng_max_sent_distance, chn_max_sent_distance, \
     eng_e2e_sent_distance, chn_e2e_sent_distance
-from data.tokenization import tokenize_doc_no_overlap, tokenize_doc_with_overlap, tokenize_query_context
+# from data.tokenization import tokenize_doc_no_overlap, tokenize_doc_with_overlap, tokenize_query_context
+from data.tokenization import tokenize_doc_with_overlap, tokenize_query_context
 
 EVENT_START_MARK = 'Event'
 EVENT_END_MARK = 'Event'

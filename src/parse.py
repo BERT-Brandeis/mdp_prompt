@@ -134,30 +134,32 @@ def main(args):
             logger.info("  Num orig examples = %d", len(test_plain_lm_inputs))
             logger.info("  Num split examples = %d", len(test_plain_features))
 
-    if args.parse_stage1 and "test" in args.input_plain:
-        if args.input_file:
-            assert "test" in args.input_file
-            assert "dev" not in args.input_file
-        assert "dev" not in args.input_plain
-        test_suffix = '_test_' + args.outfile_name
-    elif args.parse_stage1 and "dev" in args.input_plain:
-        if args.input_file:
-            assert "dev" in args.input_file
-            assert "test" not in args.input_file
-        assert "test" not in args.input_plain
-        test_suffix = '_dev_' + args.outfile_name
-    elif args.input_file and "test" in args.input_file:
-        assert "dev" not in args.input_file
-        test_suffix = '_test_' + args.outfile_name
-    elif args.input_file and "dev" in args.input_file:
-        assert "test" not in args.input_file
-        test_suffix = '_dev_' + args.outfile_name
-    elif args.input_file and "test" in args.input_plain:
-        assert "dev" not in args.input_plain
-        test_suffix = '_test_' + args.outfile_name
-    elif args.input_file and "dev" in args.input_plain:
-        assert "test" not in args.input_plain
-        test_suffix = '_dev_' + args.outfile_name
+    # if args.parse_stage1 and "test" in args.input_plain:
+    #     if args.input_file:
+    #         assert "test" in args.input_file
+    #         assert "dev" not in args.input_file
+    #     assert "dev" not in args.input_plain
+    #     test_suffix = '_test_' + args.outfile_name
+    # elif args.parse_stage1 and "dev" in args.input_plain:
+    #     if args.input_file:
+    #         assert "dev" in args.input_file
+    #         assert "test" not in args.input_file
+    #     assert "test" not in args.input_plain
+    #     test_suffix = '_dev_' + args.outfile_name
+    # else:
+    test_suffix = "_preds"
+    # elif args.input_file and "test" in args.input_file:
+    #     # assert "dev" not in args.input_file
+    #     test_suffix = '_test_' + args.outfile_name
+    # elif args.input_file and "dev" in args.input_file:
+    #     # assert "test" not in args.input_file
+    #     test_suffix = '_dev_' + args.outfile_name
+    # elif args.input_file and "test" in args.input_plain:
+    #     # assert "dev" not in args.input_plain
+    #     test_suffix = '_test_' + args.outfile_name
+    # elif args.input_file and "dev" in args.input_plain:
+    #     # assert "test" not in args.input_plain
+    #     test_suffix = '_dev_' + args.outfile_name
 
     if args.classifier == "end2end":
         if args.parse_stage1:
@@ -178,14 +180,14 @@ def main(args):
         assert args.input_plain is not None
         test_stage1_string = parse_pipeline_stage1(
             model, eval_features=test_plain_features, data_type=args.data_type)
-        with open(os.path.join(output_dir, str(args.model) + test_suffix + '_stage1.txt'),
+        with open(os.path.join(output_dir, str(args.model) + '_stage1.txt'),
                   'w', encoding='utf8') as ft1:
             ft1.write(test_stage1_string)
     elif args.classifier == "pipeline_stage2":
         if args.parse_stage2_gold:
             test_stage2_string = parse_pipeline_stage2(
                 model, eval_features=test_features, data_type=args.data_type)
-            with open(os.path.join(output_dir, str(args.model) + test_suffix + '_gold_nodes.txt'),
+            with open(os.path.join(output_dir, str(args.model) + '_stage2.txt'),
                       'w', encoding='utf8') as ft1:
                 ft1.write(test_stage2_string)
     elif args.classifier == 'span':
@@ -228,7 +230,7 @@ if __name__ == "__main__":
     parser.add_argument("--extract_conc", action='store_true', default=False)
 
     parser.add_argument("--output_dir", default=None, type=str, required=True)
-    parser.add_argument("--outfile_name", default=None, type=str, required=True)
+    parser.add_argument("--outfile_name", default=None, type=str)
     parser.add_argument("--outmodel_name", default=None, type=str, required=False)
 
     parser.add_argument("--eval_batch_size", default=16, type=int)

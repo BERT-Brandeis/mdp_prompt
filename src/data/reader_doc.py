@@ -6,7 +6,8 @@ from data.data_structures_modal import *
 from data.data_preparation_modal import make_training_data, make_test_data, make_test_data_from_doc_lst
 #from data_preparation_temporal import make_training_data as make_training_data_temporal
 #from data_preparation_temporal import make_test_data as make_test_data_temporal
-from data.tokenization import tokenize_doc_no_overlap, tokenize_doc_with_overlap
+# from data.tokenization import tokenize_doc_no_overlap, tokenize_doc_with_overlap
+from data.tokenization import tokenize_doc_with_overlap
 from data.adj import get_gcn_nodes, get_adj, convert_3dsparse_to_4dsparse
 
 
@@ -148,7 +149,7 @@ def get_a_list_of_docs(data, doc_id_list, labeled, is_training, data_type):
                     p, c, l = cand_p
                     assert c.ID == child[0][1].ID
                     if l is not None and l != 'NO_EDGE':
-                        assert l in edge_label_set
+                        assert l in edge_label_set, f"Found `{l}` which is not in edge label set `{edge_label_set}`"
                         child2parent[c.ID] = (p.ID, l)
 
         for a_list_of_child in a_list_of_child_nodes_chunked:

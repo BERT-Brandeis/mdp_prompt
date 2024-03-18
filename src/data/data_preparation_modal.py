@@ -65,6 +65,7 @@ def create_node_list(snt_list, edge_list):
         child, c_label, _, _ = edge  # Parent isn't used here
         c_snt, c_start, c_end = [int(ch) for ch in child.split('_')]
         if c_snt >= 0:
+            # print(' '.join(snt_list[c_snt]))
             c_words = ' '.join(snt_list[c_snt][c_start:c_end + 1])
         else:
             assert c_snt == -3
@@ -325,4 +326,54 @@ def make_test_data_from_doc_lst(input_lst):
 
 
 
+def generate_e_conc_from_bio_tag(bio_tag_list, data_type):
+    events = []
+    tes = []
 
+    if data_type == 'modal':
+        non_event_start = 'b_c'
+        non_event_inter = 'i_c'
+    else:
+        assert "temporal" in data_type
+        non_event_start = 'b_t'
+        non_event_inter = 'i_t'
+
+    for t_idx, t in enumerate(bio_tag_list):
+        if t == 'b_e':
+            one_e = [t_idx]
+            if t_idx == len(bio_tag_list) - 1:
+                # It's the last token
+                one_e.append(t_idx)
+                events.append(one_e)
+                continue
+            if bio_tag_list[t_idx + 1] != 'i_e':
+                one_e.append(t_idx)
+                events.append(one_e)
+                continue
+            for t_idx1, t1 in enumerate(bio_tag_list[t_idx + 1:]):
+                if t1 == 'i_e':
+                    one_e.append(t_idx1 + t_idx + 1)
+                    if t_idx1 + t_idx + 1 == len(bio_tag_list) - 1:
+                        events.append(one_e)
+                else:
+                    events.append(one_e)
+                    break
+        elif t == non_event_start:
+            one_te = [t_idx]
+            if t_idx == len(bio_tag_list) - 1:
+                one_te.append(t_idx)
+                tes.append(one_te)
+                continue
+            if bio_tag_list[t_idx + 1] != non_event_inter:
+                one_te.append(t_idx)
+                tes.append(one_te)
+                continue
+            for t_idx1, t1 in enumerate(bio_tag_list[t_idx + 1:]):
+                if t1 == non_event_inter:
+                    one_te.append(t_idx1 + t_idx + 1)
+                    if t_idx1 + t_idx + 1 == len(bio_tag_list) - 1:
+                        tes.append(one_te)
+                else:
+                    tes.append(one_te)
+                    break
+    return events, tes

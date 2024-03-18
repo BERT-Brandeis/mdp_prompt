@@ -7,8 +7,7 @@ from collections import Counter
 from eval import eval_all, eval_stage1, get_labeled_tups, get_event_tups, get_te_tups
 from data.data_structures_modal import MODAL_EDGE_LABEL_LIST, TEMPORAL_EDGE_LABEL_LIST, id2EVENT_CONC_BIO
 from data.data_structures_modal import id2PARSING_BIO, MODAL_EDGE_LABEL_LIST_SPAN_id2label
-from data.data_preparation_modal import generate_e_conc_from_bio_tag, get_word_index_in_doc, \
-    tag_paths_to_spans
+from data.data_preparation_modal import generate_e_conc_from_bio_tag, get_word_index_in_doc
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -569,7 +568,7 @@ def get_original_id(subtoken_ids, subtoken_map, sent_map, sent_token_map):
 def parse_span(model, eval_features):
     list_of_para_predict_parents = defaultdict(list)
     list_of_para_predict_labels = defaultdict(list)
-    
+
     from data.reader_doc_qa import tag_paths_to_spans  # generate_parent_grand_p_from_bio_tag
 
     for step, batch in enumerate(eval_features):

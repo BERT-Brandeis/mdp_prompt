@@ -12,21 +12,23 @@ DCT_word = 'DCT'
 DCT_label = '<DCT>'
 
 
-#MODAL_EDGE_LABEL_LIST = [
-#'pos',
-#'neg',
-#'pp',
-#'pn',
-#'Depend-on']
 MODAL_EDGE_LABEL_LIST = [
 'pos',
 'neg',
-'neg_prt',
-'neg_neut',
 'pp',
 'pn',
+# ]
 'Depend-on'
 ]
+# MODAL_EDGE_LABEL_LIST = [
+# 'pos',
+# 'neg',
+# 'neg_prt',
+# 'neg_neut',
+# 'pp', # pos_prt
+# 'pn', # pos_neut
+# 'Depend-on'
+# ]
 
 TEMPORAL_EDGE_LABEL_LIST = [
 'before',
